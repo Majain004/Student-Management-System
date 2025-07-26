@@ -1,0 +1,13 @@
+<!-- 🔐 OTP Verification -->
+<div class="container">
+  <h2 class="heading">🔐 Verify OTP</h2>
+  <form method="POST">
+    <label>Enter the 6-digit OTP sent to your email:</label>
+    <input type="text" name="otp" placeholder="e.g., 123456" required>
+    <input type="submit" value="Verify OTP">
+  </form>
+  {% if message %}
+    <div class="message">{{ message }}</div>
+  {% endif %}
+</div>
+

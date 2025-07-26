@@ -1,0 +1,23 @@
+<!-- ✏️ Edit Student -->
+<div class="container">
+  <h2 class="heading">✏️ Edit Student</h2>
+  <form method="POST">
+    <label>Roll No:</label>
+    <input type="text" name="roll" value="{{ student[0] }}" readonly>
+
+    <label>Name:</label>
+    <input type="text" name="name" value="{{ student[1] }}" required>
+
+    <label>Course:</label>
+    <input type="text" name="course" value="{{ student[2] }}" required>
+
+    <label>Phone:</label>
+    <input type="text" name="phone" value="{{ student[3] }}" required>
+
+    <label>Address:</label>
+    <textarea name="address" required>{{ student[4] }}</textarea>
+
+    <input type="submit" value="✅ Update Student">
+  </form>
+</div>
+

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Management System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <div class="logout-button">
+  <a href="{{ url_for('logout') }}">🔓 Logout</a>
+</div>
+
+
+  <div class="container">
+    <h1 class="heading">➕ Add Student</h1>
+
+    <form method="POST">
+      <label>Roll No:</label>
+      <input type="text" name="id" placeholder="e.g., 101" required>
+
+      <label>Name:</label>
+      <input type="text" name="name" placeholder="e.g., John Doe" required>
+
+      <label>Course:</label>
+      <input type="text" name="course" placeholder="e.g., Computer Science" required>
+
+      <label>Phone:</label>
+      <input type="text" name="phone" required>
+
+      <label>Address:</label>
+      <textarea name="address" rows="3" required></textarea>
+
+      <input type="submit" value="➕ Add Student">
+    </form>
+
+    {% if message %}
+      <div class="message">{{ message }}</div>
+    {% endif %}
+
+    <div class="actions">
+      <a class="btn-secondary" href="{{ url_for('view_students') }}">📋 View All Students</a>
+      <a class="btn-secondary" href="{{ url_for('export') }}">🧾 Export CSV</a>
+      <button class="btn-toggle" onclick="toggleDark()">🌙 Toggle Dark Mode</button>
+    </div>
+  </div>
+
+  <footer class="footer">
+    © 2025 Student Management System. All rights reserved.
+  </footer>
+
+  <script>
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+    }
+  </script>
+</body>
+</html>

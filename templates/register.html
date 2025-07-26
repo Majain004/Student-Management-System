@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>📝 Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color, #f4f4f4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .card {
+            background-color: var(--card-bg, #fff);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            width: 400px;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .dark {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h2>📝 Register</h2>
+    <form method="POST">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="password" name="confirm" placeholder="Confirm Password" required>
+        <button type="submit">Register</button>
+    </form>
+   <a href="{{ url_for('login') }}" class="btn">Already have an account? Login</a>
+
+    <button onclick="toggleDark()">🌗 Toggle Dark Mode</button>
+
+    {% if message %}
+        <p style="color:red;">{{ message }}</p>
+    {% endif %}
+</div>
+
+<script>
+    function toggleDark() {
+        document.body.classList.toggle("dark");
+    }
+</script>
+</body>
+</html>
