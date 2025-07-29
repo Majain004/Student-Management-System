@@ -1,87 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard | Student Management</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Student Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
+    <div class="navbar">
+        <div class="logo">📘 Student Management</div>
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}">🏠 Home</a>
+            <a href="{{ url_for('view_students') }}">📋 View Students</a>
+            <a href="{{ url_for('export') }}">🧾 Export</a>
+        </div>
+        <div class="nav-actions">
+             <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+             <button onclick="toggleDark()" class="btn-toggle">🌙</button>
+        </div>
+    </div>
 
-<!-- ✅ Navbar -->
-<div class="navbar">
-  <div class="logo">📘 Student Management</div>
-  <button class="hamburger" onclick="toggleMenu()">☰</button>
+    <div class="container">
+        <h1 class="heading">➕ Add New Student</h1>
+        <form method="POST">
+            <label>Roll No:</label>
+            <input type="text" name="id" placeholder="e.g., 101" required />
 
-  <!-- ✅ Navigation Links -->
-  <div id="navLinks" class="nav-links">
-    <a href="/dashboard">🏠 Home</a>
-    <a href="/students">📋 View Students</a>
-    <a href="/export">🧾 Export</a>
-    <a href="/logout">🔓 Logout</a>
-  </div>
-</div>
+            <label>Name:</label>
+            <input type="text" name="name" placeholder="e.g., John Doe" required />
 
-<!-- ✅ Optional Logout Button for Desktop -->
-<div class="logout-button">
-  <a href="{{ url_for('logout') }}">🔓 Logout</a>
-</div>
+            <label>Course:</label>
+            <input type="text" name="course" placeholder="e.g., Computer Science" required />
 
-<!-- ✅ Main Content -->
-<div class="container">
-  <h1 class="heading">➕ Add Student</h1>
-  <form method="POST">
-    <label>Roll No:</label>
-    <input type="text" name="id" placeholder="e.g., 101" required />
+            <label>Phone:</label>
+            <input type="text" name="phone" placeholder="e.g., 9876543210" required />
 
-    <label>Name:</label>
-    <input type="text" name="name" placeholder="e.g., John Doe" required />
+            <label>Address:</label>
+            <textarea name="address" rows="3" placeholder="Enter student address" required></textarea>
 
-    <label>Course:</label>
-    <input type="text" name="course" placeholder="e.g., Computer Science" required />
+            <button type="submit" class="btn btn-success">Add Student</button>
+        </form>
+        {% if message %}
+            <div class="message">{{ message }}</div>
+        {% endif %}
+    </div>
 
-    <label>Phone:</label>
-    <input type="text" name="phone" required />
+    <footer class="footer">
+        © 2025 Student Management System. All rights reserved.
+    </footer>
 
-    <label>Address:</label>
-    <textarea name="address" rows="3" required></textarea>
-
-    <input type="submit" value="➕ Add Student" />
-  </form>
-
-  {% if message %}
-    <div class="message">{{ message }}</div>
-  {% endif %}
-
-  <div class="actions">
-    <a class="btn-secondary" href="{{ url_for('view_students') }}">📋 View All Students</a>
-    <a class="btn-secondary" href="{{ url_for('export') }}">🧾 Export CSV</a>
-    <button class="btn-toggle" onclick="toggleDark()">🌙 Toggle Dark Mode</button>
-  </div>
-</div>
-
-<!-- ✅ Footer -->
-<footer class="footer">
-  © 2025 Student Management System. All rights reserved.
-</footer>
-
-<!-- ✅ JavaScript for Menu Toggle -->
-<script>
-  function toggleMenu() {
-    document.getElementById("navLinks").classList.toggle("show");
-  }
-
-  // Close menu when clicking outside
-  window.addEventListener("click", function (event) {
-    const navLinks = document.getElementById("navLinks");
-    const isHamburger = event.target.closest(".hamburger");
-    const isInsideNav = event.target.closest(".nav-links");
-
-    if (!isHamburger && !isInsideNav) {
-      navLinks.classList.remove("show");
-    }
-  });
-</script>
-
+    <script>
+        function toggleDark() {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("dark-mode", document.body.classList.contains("dark-mode"));
+        }
+        if (localStorage.getItem("dark-mode") === "true") {
+            document.body.classList.add("dark-mode");
+        }
+    </script>
 </body>
 </html>

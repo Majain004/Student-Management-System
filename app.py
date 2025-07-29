@@ -28,7 +28,7 @@ def load_user(user_id):
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USERNAME'] = 'jainma004@gmail.com'
-app.config['MAIL_PASSWORD'] = 'aqrxsdflnzbnsfoa'  # or app password
+app.config['MAIL_PASSWORD'] = 'ajaopkwnlejubbfxp'  # or app password
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 mail = Mail(app)
