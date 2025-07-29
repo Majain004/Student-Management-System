@@ -1,129 +1,51 @@
-<!-- templates/students.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>All Students</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-        }
-
-        h2 {
-            text-align: center;
-            color: #2c3e50;
-        }
-
-        .top-buttons {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .top-buttons a, .top-buttons button {
-            display: inline-block;
-            margin: 5px;
-            padding: 10px 20px;
-            text-decoration: none;
-            background: #3498db;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .top-buttons button:hover,
-        .top-buttons a:hover {
-            background: #2980b9;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-        }
-
-        th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: center;
-        }
-
-        th {
-            background: #3498db;
-            color: white;
-        }
-
-        .dark {
-            background: #121212;
-            color: white;
-        }
-
-        .dark table {
-            background: #1e1e1e;
-            color: white;
-        }
-
-        .dark th {
-            background: #333;
-        }
-
-        .dark td {
-            border-color: #444;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>📋 Students</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
-    <h2>📋 Student List</h2>
+  <h2>📋 Student List</h2>
+  <div class="top-buttons">
+    <a href="/">← Back</a>
+    <a href="/export">🧾 Export to CSV</a>
+    <button onclick="toggleDark()">🌙 Toggle Dark Mode</button>
+  </div>
 
-    <div class="top-buttons">
-        <a href="/">← Back</a>
-        <a href="/export">🧾 Export to CSV</a>
-        <button onclick="toggleDark()">🌙 Toggle Dark Mode</button>
-    </div>
-
-   
-</td>
-<table>
+  <table class="results-table">
     <tr>
-        <th>Roll No</th>
-        <th>Name</th>
-        <th>Course</th>
-        <th>Phone</th>
-        <th>Address</th>
-
-        <th>Actions</th>
+      <th>Roll No</th>
+      <th>Name</th>
+      <th>Course</th>
+      <th>Phone</th>
+      <th>Address</th>
+      <th>Actions</th>
     </tr>
     {% for s in students %}
     <tr>
-        <td>{{ s[0] }}</td>
-        <td>{{ s[1] }}</td>
-        <td>{{ s[2] }}</td>
-        <td>{{ s[3] }}</td>  <!-- assuming s[3] is phone -->
-        <td>{{ s[4] }}</td>
-        <td>
-            <form action="{{ url_for('edit_student', roll=s[0]) }}" method="get" style="display:inline;">
-                <button type="submit">✏️</button>
-            </form>
-            <form action="{{ url_for('delete_student', roll=s[0]) }}" method="POST" style="display:inline;">
-                <button type="submit">🗑️</button>
-            </form>
-        </td>
+      <td>{{ s[0] }}</td>
+      <td>{{ s[1] }}</td>
+      <td>{{ s[2] }}</td>
+      <td>{{ s[3] }}</td>
+      <td>{{ s[4] }}</td>
+      <td>
+        <form action="{{ url_for('edit_student', roll=s[0]) }}" method="get" style="display:inline;">
+          <button type="submit">✏️</button>
+        </form>
+        <form action="{{ url_for('delete_student', roll=s[0]) }}" method="POST" style="display:inline;">
+          <button type="submit">🗑️</button>
+        </form>
+      </td>
     </tr>
     {% endfor %}
-</table>
+  </table>
 
-    <script>
-        function toggleDark() {
-            document.body.classList.toggle('dark');
-        }
-    </script>
-
-    
+  <script>
+    function toggleDark() {
+      document.body.classList.toggle("dark");
+    }
+  </script>
 </body>
 </html>

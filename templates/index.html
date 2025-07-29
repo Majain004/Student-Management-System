@@ -1,58 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Student Management System</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | Student Management</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
 
-  <div class="logout-button">
+<!-- ✅ Navbar -->
+<div class="navbar">
+  <div class="logo">📘 Student Management</div>
+  <button class="hamburger" onclick="toggleMenu()">☰</button>
+
+  <!-- ✅ Navigation Links -->
+  <div id="navLinks" class="nav-links">
+    <a href="/dashboard">🏠 Home</a>
+    <a href="/students">📋 View Students</a>
+    <a href="/export">🧾 Export</a>
+    <a href="/logout">🔓 Logout</a>
+  </div>
+</div>
+
+<!-- ✅ Optional Logout Button for Desktop -->
+<div class="logout-button">
   <a href="{{ url_for('logout') }}">🔓 Logout</a>
 </div>
 
+<!-- ✅ Main Content -->
+<div class="container">
+  <h1 class="heading">➕ Add Student</h1>
+  <form method="POST">
+    <label>Roll No:</label>
+    <input type="text" name="id" placeholder="e.g., 101" required />
 
-  <div class="container">
-    <h1 class="heading">➕ Add Student</h1>
+    <label>Name:</label>
+    <input type="text" name="name" placeholder="e.g., John Doe" required />
 
-    <form method="POST">
-      <label>Roll No:</label>
-      <input type="text" name="id" placeholder="e.g., 101" required>
+    <label>Course:</label>
+    <input type="text" name="course" placeholder="e.g., Computer Science" required />
 
-      <label>Name:</label>
-      <input type="text" name="name" placeholder="e.g., John Doe" required>
+    <label>Phone:</label>
+    <input type="text" name="phone" required />
 
-      <label>Course:</label>
-      <input type="text" name="course" placeholder="e.g., Computer Science" required>
+    <label>Address:</label>
+    <textarea name="address" rows="3" required></textarea>
 
-      <label>Phone:</label>
-      <input type="text" name="phone" required>
+    <input type="submit" value="➕ Add Student" />
+  </form>
 
-      <label>Address:</label>
-      <textarea name="address" rows="3" required></textarea>
+  {% if message %}
+    <div class="message">{{ message }}</div>
+  {% endif %}
 
-      <input type="submit" value="➕ Add Student">
-    </form>
-
-    {% if message %}
-      <div class="message">{{ message }}</div>
-    {% endif %}
-
-    <div class="actions">
-      <a class="btn-secondary" href="{{ url_for('view_students') }}">📋 View All Students</a>
-      <a class="btn-secondary" href="{{ url_for('export') }}">🧾 Export CSV</a>
-      <button class="btn-toggle" onclick="toggleDark()">🌙 Toggle Dark Mode</button>
-    </div>
+  <div class="actions">
+    <a class="btn-secondary" href="{{ url_for('view_students') }}">📋 View All Students</a>
+    <a class="btn-secondary" href="{{ url_for('export') }}">🧾 Export CSV</a>
+    <button class="btn-toggle" onclick="toggleDark()">🌙 Toggle Dark Mode</button>
   </div>
+</div>
 
-  <footer class="footer">
-    © 2025 Student Management System. All rights reserved.
-  </footer>
+<!-- ✅ Footer -->
+<footer class="footer">
+  © 2025 Student Management System. All rights reserved.
+</footer>
 
-  <script>
-    function toggleDark() {
-      document.body.classList.toggle('dark');
+<!-- ✅ JavaScript for Menu Toggle -->
+<script>
+  function toggleMenu() {
+    document.getElementById("navLinks").classList.toggle("show");
+  }
+
+  // Close menu when clicking outside
+  window.addEventListener("click", function (event) {
+    const navLinks = document.getElementById("navLinks");
+    const isHamburger = event.target.closest(".hamburger");
+    const isInsideNav = event.target.closest(".nav-links");
+
+    if (!isHamburger && !isInsideNav) {
+      navLinks.classList.remove("show");
     }
-  </script>
+  });
+</script>
+
 </body>
 </html>
