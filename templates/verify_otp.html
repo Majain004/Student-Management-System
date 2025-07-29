@@ -1,13 +1,54 @@
-<!-- 🔐 OTP Verification -->
-<div class="container">
-  <h2 class="heading">🔐 Verify OTP</h2>
-  <form method="POST">
-    <label>Enter the 6-digit OTP sent to your email:</label>
-    <input type="text" name="otp" placeholder="e.g., 123456" required>
-    <input type="submit" value="Verify OTP">
-  </form>
-  {% if message %}
-    <div class="message">{{ message }}</div>
-  {% endif %}
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verify OTP | Student Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <div class="card">
+        <h2 class="heading">🔐 Verify OTP</h2>
+        <p style="text-align: center; margin-top: -1rem; margin-bottom: 1.5rem; color: #666;">
+            Enter the 6-digit code sent to your email.
+        </p>
 
+        <form method="POST">
+            <label for="otp">Verification Code</label>
+            <input 
+                type="text" 
+                id="otp" 
+                name="otp" 
+                placeholder="123456" 
+                required 
+                maxlength="6" 
+                pattern="\d{6}"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                style="text-align: center; font-size: 1.2rem; letter-spacing: 0.5rem;"
+            />
+            <button type="submit" class="btn btn-primary">Verify Account</button>
+        </form>
+
+        <a href="{{ url_for('register') }}" class="link-button">Resend OTP</a>
+
+        {% if message %}
+            <div class="message" style="margin-top: 1rem;">{{ message }}</div>
+        {% endif %}
+    </div>
+
+    <footer class="footer">
+        <button onclick="toggleDark()" class="btn-toggle">Toggle Dark Mode</button>
+    </footer>
+
+    <script>
+        function toggleDark() {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("dark-mode", document.body.classList.contains("dark-mode"));
+        }
+        if (localStorage.getItem("dark-mode") === "true") {
+            document.body.classList.add("dark-mode");
+        }
+    </script>
+</body>
+</html>
