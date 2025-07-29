@@ -4,8 +4,14 @@ import csv
 import smtplib
 import random
 from email.mime.text import MIMEText
+import os
+
 from flask_mail import Mail
 from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin, current_user
+from flask_mail import Message
+from dotenv import load_dotenv
+load_dotenv()
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
@@ -27,8 +33,8 @@ def load_user(user_id):
 # -------- Flask-Mail Config --------
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
-app.config['MAIL_USERNAME'] = 'jainma004@gmail.com'
-app.config['MAIL_PASSWORD'] = 'ajaopkwnlejubbfxp'  # or app password
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')   # or app password
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 mail = Mail(app)
@@ -74,25 +80,26 @@ def register():
         confirm = request.form.get('confirm', '').strip()
 
         if not username or not email or not password or not confirm:
-            msg = "❌ All fields required!"
+            msg = "❌ All fields are required!"
         elif password != confirm:
             msg = "❌ Passwords do not match!"
         else:
             otp = str(random.randint(100000, 999999))
             session['temp_user'] = {'username': username, 'email': email, 'password': password, 'otp': otp}
 
-            message = MIMEText(f'Your OTP for registration is: {otp}')
-            message['Subject'] = 'Student Management Registration OTP'
-            message['From'] = app.config['MAIL_USERNAME']
-            message['To'] = email
-
+            # Use Flask-Mail to create and send the message
+            email_message = Message('Student Management Registration OTP',
+                                    sender=app.config['MAIL_USERNAME'],
+                                    recipients=[email])
+            email_message.body = f'Your OTP for registration is: {otp}'
+            
             try:
-                with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
-                    server.login(app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD'])
-                    server.sendmail(app.config['MAIL_USERNAME'], email, message.as_string())
+                # Use the mail object you already created
+                mail.send(email_message)
                 return redirect(url_for('verify_otp'))
             except Exception as e:
                 msg = f"❌ Failed to send OTP: {e}"
+            
     return render_template('register.html', message=msg)
 
 # -------- OTP Verification --------
