@@ -245,6 +245,76 @@ def export():
 
     return send_file('students.csv', as_attachment=True)
 
+@app.route('/verify-reset-otp', methods=['GET', 'POST'])
+def verify_reset_otp():
+    msg = ''
+    if request.method == 'POST':
+        entered_otp = request.form.get('otp', '').strip()
+        if entered_otp == session.get('reset_otp'):
+            return redirect(url_for('reset_password'))
+        else:
+            msg = "❌ Incorrect OTP."
+
+    return render_template('verify_otp.html', message=msg)
+
+
+@app.route('/reset-password', methods=['GET', 'POST'])
+def reset_password():
+    msg = ''
+    if request.method == 'POST':
+        new_pass = request.form.get('password', '').strip()
+        confirm = request.form.get('confirm', '').strip()
+
+        if new_pass != confirm:
+            msg = "❌ Passwords do not match."
+        else:
+            email = session.get('reset_email')
+            conn = sqlite3.connect('students.db')
+            cur = conn.cursor()
+            cur.execute("UPDATE users SET password = ? WHERE email = ?", (new_pass, email))
+            conn.commit()
+            conn.close()
+            session.pop('reset_email', None)
+            session.pop('reset_otp', None)
+            msg = "✅ Password updated. Please login."
+            return redirect(url_for('login'))
+
+    return render_template('reset_password.html', message=msg)
+
+
+@app.route('/forgot-password', methods=['GET', 'POST'])
+def forgot_password():
+    msg = ''
+    if request.method == 'POST':
+        email = request.form.get('email', '').strip()
+        conn = sqlite3.connect('students.db')
+        cur = conn.cursor()
+        cur.execute("SELECT username FROM users WHERE email = ?", (email,))
+        user = cur.fetchone()
+        conn.close()
+
+        if user:
+            otp = str(random.randint(100000, 999999))
+            session['reset_otp'] = otp
+            session['reset_email'] = email
+
+            message = MIMEText(f'Your OTP to reset password is: {otp}')
+            message['Subject'] = 'Password Reset OTP - Student Management System'
+            message['From'] = app.config['MAIL_USERNAME']
+            message['To'] = email
+
+            try:
+                with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+                    server.login(app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD'])
+                    server.sendmail(app.config['MAIL_USERNAME'], email, message.as_string())
+                return redirect(url_for('verify_reset_otp'))
+            except Exception as e:
+                msg = f"❌ Failed to send OTP: {e}"
+        else:
+            msg = "❌ Email not found!"
+
+    return render_template('forgot_password.html', message=msg)
+
 # -------- Run Server --------
 if __name__ == '__main__':
     app.run(debug=True)

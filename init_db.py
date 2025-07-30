@@ -3,29 +3,20 @@ import sqlite3
 conn = sqlite3.connect("students.db")
 cursor = conn.cursor()
 
-cursor.execute("DROP TABLE IF EXISTS students")
+# Drop tables if they exist
+cursor.executescript("""
+DROP TABLE IF EXISTS students;
+DROP TABLE IF EXISTS users;
 
-cursor.execute("""
 CREATE TABLE students (
     roll INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
     course TEXT NOT NULL,
     phone TEXT,
     address TEXT
-)
-""")
+);
 
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL,
-    role TEXT DEFAULT 'user'
-)
-""")
-
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
     email TEXT UNIQUE NOT NULL,
@@ -36,4 +27,5 @@ CREATE TABLE IF NOT EXISTS users (
 
 conn.commit()
 conn.close()
-print("✅ Tables created successfully.")
+
+print("✅ Tables dropped and recreated successfully.")

@@ -19,6 +19,8 @@
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
 
+        <a href="{{ url_for('forgot_password') }}" class="forgot-link">🔑 Forgot Password?</a>
+
         <form action="{{ url_for('guest_login') }}" method="POST">
             <button type="submit" class="btn btn-secondary">Login as Guest</button>
         </form>

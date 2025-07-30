@@ -259,3 +259,14 @@ body.dark-mode .footer {
     margin-top: 1rem;
     text-align: center;
 }
+
+.forgot-link {
+  display: block;
+  margin-top: 10px;
+  text-align: right;
+  color: #007bff;
+  text-decoration: none;
+}
+.forgot-link:hover {
+  text-decoration: underline;
+}
